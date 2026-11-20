@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ansh Tripathi</title>
+<meta name="description" content="Mechanical engineering student at UT Austin working where mechanism design meets the code that controls it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Urbanist:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* VOICE   quiet, exact, a student's notebook that has been edited
+   IDEA    a well-set engineering journal: wide margins, margin notes, live figures
+   PICTURE the four-bar linkage, drawn like a textbook figure with ground symbols
+   COLOUR  warm cream, charcoal ink, one forest green; brick only for failures in demos
+   TYPE    Newsreader for reading, Urbanist for labels, Plex Mono for numbers only */
+:root{
+  color-scheme:light dark;
+  --bg:light-dark(#F4EFE4,#161814);
+  --paper:light-dark(#FBF8F1,#1D201B);
+  --ink:light-dark(#22231F,#ECE6D8);
+  --ink2:light-dark(#625E54,#A6A193);
+  --rule:light-dark(#DAD2C1,#33362E);
+  --grid:light-dark(#E9E3D6,#272A23);
+  --green:light-dark(#2E5A3C,#8FBE99);
+  --soft:light-dark(#E6EADD,#1F2A20);
+  --warn:light-dark(#9C3F2A,#E39279);
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"Urbanist","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:24px;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--serif);overflow-x:clip;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit;text-decoration:underline;text-decoration-color:var(--green);
+  text-decoration-thickness:1.5px;text-underline-offset:3px}
+a:hover{color:var(--green)}
+a:focus-visible,input:focus-visible,canvas:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:2px}
+::selection{background:var(--green);color:var(--bg)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 max(5vw,20px)}
+
+/* header */
+.top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px 32px;
+  padding:26px 0 22px;border-bottom:1px solid var(--rule);font-family:var(--sans)}
+.top .me{font-weight:600;font-size:16px;text-decoration:none}
+.top nav{display:flex;flex-wrap:wrap;gap:4px 28px}
+.top nav a{font-size:15px;color:var(--ink2);text-decoration:none;padding:6px 0}
+.top nav a:hover{color:var(--green)}
+
+/* intro */
+.intro{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,6vw,96px);
+  padding:clamp(56px,9vw,124px) 0 clamp(56px,7vw,96px)}
+h1{font-weight:400;font-size:clamp(50px,7.6vw,96px);line-height:.96;letter-spacing:-.018em;margin:0}
+.role{font-style:italic;font-size:clamp(22px,2.5vw,30px);line-height:1.2;color:var(--green);margin:14px 0 34px}
+.lede{font-size:clamp(18px,1.6vw,20px);line-height:1.6;max-width:33em;margin:0 0 16px}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 32px;margin:44px 0 0;
+  padding-top:24px;border-top:1px solid var(--rule);max-width:36em}
+.facts div{margin:0}
+.facts dt{font-family:var(--sans);font-size:14px;color:var(--ink2)}
+.facts dd{margin:2px 0 0;font-size:18px;line-height:1.35}
+
+.figure{margin:0;align-self:end;padding-bottom:6px}
+.figure svg{display:block;width:100%;height:auto;overflow:visible}
+.figure figcaption{font-size:15px;font-style:italic;color:var(--ink2);margin-top:14px;
+  padding-top:12px;border-top:1px solid var(--rule);max-width:28em}
+#fourbar .link{stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;fill:none}
+#fourbar .tri{stroke:var(--ink);stroke-width:1.1;fill:none}
+#fourbar .pin{fill:var(--bg);stroke:var(--ink);stroke-width:1.2}
+#fourbar .gnd{stroke:var(--ink2);stroke-width:.8;fill:none}
+#fourbar .path{stroke:var(--green);stroke-width:.8;stroke-dasharray:2 2.4;fill:none;opacity:.8}
+#fourbar .pt{fill:var(--green);stroke:var(--ink);stroke-width:1}
+
+/* sections */
+.sec{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr);gap:clamp(24px,5vw,72px);
+  padding:clamp(56px,7vw,96px) 0;border-top:1px solid var(--rule)}
+.sec-h h2{font-weight:400;font-size:clamp(30px,3vw,38px);line-height:1.05;margin:0 0 10px;letter-spacing:-.01em}
+.sec-h p{font-family:var(--sans);font-size:15px;line-height:1.5;color:var(--ink2);margin:0;max-width:16em}
+@media (min-width:901px){.sec-h{position:sticky;top:32px;align-self:start}}
+
+/* projects */
+.proj{padding-bottom:clamp(48px,6vw,80px);margin-bottom:clamp(48px,6vw,80px);border-bottom:1px solid var(--rule)}
+.proj:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.proj h3{font-weight:500;font-size:clamp(28px,2.9vw,38px);line-height:1.08;letter-spacing:-.012em;margin:0;text-wrap:balance}
+.proj h3 em{font-weight:400;color:var(--ink2)}
+.meta{font-family:var(--sans);font-size:15px;color:var(--ink2);margin:10px 0 26px}
+.proj-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,232px);gap:clamp(28px,4vw,56px)}
+.proj-body p{margin:0 0 16px;max-width:36em}
+.proj-body p:last-child{margin-bottom:0}
+.spec{margin:4px 0 0;font-family:var(--sans);font-size:14.5px;border-top:1px solid var(--ink)}
+.spec div{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.spec dt{color:var(--ink2)}
+.spec dd{margin:0;text-align:right;font-weight:500}
+
+/* live demos */
+.demo{margin-top:36px;background:var(--paper);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.demo-head{font-family:var(--sans);font-size:15px;color:var(--ink2);padding:14px 18px;border-bottom:1px solid var(--rule)}
+.demo-head b{color:var(--green);font-weight:600;margin-right:8px}
+.demo-ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));border-bottom:1px solid var(--rule)}
+.demo-ctl label{display:block;padding:12px 18px 8px;white-space:nowrap;border-right:1px solid var(--rule);
+  font-family:var(--sans);font-size:14px;color:var(--ink2)}
+.demo-ctl label:last-child{border-right:0}
+.demo-ctl output{font-family:var(--mono);font-size:13px;color:var(--ink);font-weight:500}
+.demo-ctl input[type=range]{display:block;width:100%;margin:6px 0 0;height:28px;accent-color:var(--green);cursor:pointer}
+.demo canvas{display:block;width:100%;touch-action:none}
+.demo-out{font-family:var(--mono);font-size:12.5px;line-height:1.8;color:var(--ink2);
+  padding:14px 18px;border-top:1px solid var(--rule)}
+.demo-out b{color:var(--ink);font-weight:500}
+.demo-out .bad{color:var(--warn)}
+.demo-out .good{color:var(--green)}
+
+/* tools */
+table{width:100%;border-collapse:collapse;border-top:1px solid var(--ink)}
+th{font-family:var(--sans);font-weight:500;font-size:14px;color:var(--ink2);text-align:left;padding:12px 12px 10px 0}
+td{padding:14px 12px 14px 0;border-top:1px solid var(--rule);vertical-align:baseline}
+td:first-child{font-size:19px;white-space:nowrap}
+td.d{font-family:var(--sans);font-size:14.5px;color:var(--ink2);text-align:right;padding-right:0;white-space:nowrap}
+th:last-child{text-align:right;padding-right:0}
+
+/* notes */
+.notes{list-style:none;margin:0;padding:0;display:grid;gap:clamp(32px,4vw,48px)}
+.notes h3{font-weight:400;font-style:italic;font-size:clamp(23px,2.2vw,28px);line-height:1.2;margin:0 0 8px}
+.notes p{margin:0;max-width:34em;color:var(--ink2)}
+
+/* contact */
+.say{font-size:clamp(27px,3.4vw,42px);line-height:1.22;letter-spacing:-.01em;margin:0 0 22px;max-width:20em;text-wrap:pretty}
+.say a{text-decoration-thickness:2px;text-underline-offset:5px}
+.small{font-family:var(--sans);font-size:15px;color:var(--ink2);margin:0}
+
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 24px;padding:26px 0 44px;
+  border-top:1px solid var(--rule);font-family:var(--sans);font-size:14px;color:var(--ink2)}
+
+@media (max-width:900px){
+  .intro{grid-template-columns:1fr}
+  .figure{max-width:520px}
+  .sec{grid-template-columns:1fr}
+  .sec-h p{max-width:30em}
+}
+@media (max-width:680px){
+  .proj-body{grid-template-columns:1fr}
+  .demo-ctl label{border-right:0;border-bottom:1px solid var(--rule)}
+  .demo-ctl label:last-child{border-bottom:0}
+  .facts{grid-template-columns:1fr 1fr}
+  td:first-child{font-size:17px;white-space:normal}
+  th:nth-child(2),td:nth-child(2){display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <a class="me" href="#">Ansh Tripathi</a>
+  <nav aria-label="Sections">
+    <a href="#work">Work</a><a href="#tools">Tools</a><a href="#notes">Notes</a><a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+<section class="intro">
+  <div>
+    <h1>Ansh Tripathi</h1>
+    <p class="role">Mechanism design, and the code that moves it.</p>
+    <p class="lede">First-year mechanical engineering student at UT Austin. I work where a moving part meets the code that decides how it moves: linkage and actuator design on one side, embedded control and testing on the other.</p>
+    <p class="lede">Most of my software exists because some piece of hardware needed it.</p>
+    <dl class="facts">
+      <div><dt>Program</dt><dd>B.S. Mechanical Engineering</dd></div>
+      <div><dt>School</dt><dd>UT Austin, Cockrell</dd></div>
+      <div><dt>Minor</dt><dd>Robotics (planned)</dd></div>
+      <div><dt>Looking for</dt><dd>Hardware or robotics internship</dd></div>
+    </dl>
+  </div>
+  <figure class="figure">
+    <svg id="fourbar" viewBox="14 62 156 122" role="img" aria-label="Animated four-bar crank-rocker linkage tracing its coupler curve.">
+      <path id="curve" class="path"/>
+      <g class="gnd">
+        <path d="M52 100 H132" stroke-dasharray="1.5 2.5"/>
+        <path d="M52 100 L45.5 111 L58.5 111 Z M132 100 L125.5 111 L138.5 111 Z"/>
+        <path d="M42 111 H62 M44 116 L48 111 M49 116 L53 111 M54 116 L58 111 M59 116 L63 111
+                 M122 111 H142 M124 116 L128 111 M129 116 L133 111 M134 116 L138 111 M139 116 L143 111"/>
+      </g>
+      <g class="link"><line id="l1"/><line id="l2"/><line id="l3"/></g>
+      <g class="tri"><line id="t1"/><line id="t2"/></g>
+      <g class="pin">
+        <circle id="o2" r="3"/><circle id="o4" r="3"/>
+        <circle id="pa" r="2.4"/><circle id="pb" r="2.4"/>
+      </g>
+      <circle id="pp" class="pt" r="3.2"/>
+    </svg>
+    <figcaption>A crank-rocker four-bar (a = 28, b = 90, c = 60, d = 80). The green dot is the coupler point; its path is dashed.</figcaption>
+  </figure>
+</section>
+
+<section class="sec" id="work">
+  <div class="sec-h">
+    <h2>Selected work</h2>
+    <p>Five projects. The last three run live in your browser, using the same math as the originals.</p>
+  </div>
+  <div>
+
+    <article class="proj">
+      <h3>JaamTech <em>scam-awareness assistant</em></h3>
+      <p class="meta">Co-founder and lead developer, 2024 to present</p>
+      <div class="proj-body">
+        <div>
+          <p>A free conversational agent that helps seniors and kids spot digital scams before they act on them. Someone pastes in the message they just got, and the assistant walks them through what is off about it.</p>
+          <p>I built the agent on Google Cloud Platform, designed and shipped the site, and ran the outreach that put it in front of people who would never find it on their own: in-person digital safety workshops reaching more than 100 people in India.</p>
+          <p>Most of the effort went into two things: wording replies that a 70-year-old would trust and act on, and getting the assistant into the rooms where it mattered.</p>
+        </div>
+        <dl class="spec">
+          <div><dt>Role</dt><dd>Co-founder</dd></div>
+          <div><dt>Stack</dt><dd>GCP, Python, web</dd></div>
+          <div><dt>Reached</dt><dd>100+ in person</dd></div>
+          <div><dt>Cost to user</dt><dd>Free</dd></div>
+          <div><dt>Status</dt><dd>Active</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="proj">
+      <h3>FIRE <em>research placement</em></h3>
+      <p class="meta">Walker Department of Mechanical Engineering, 2026</p>
+      <div class="proj-body">
+        <div>
+          <p>Selected for FIRE, the invitation-only first-year research program in UT Austin's Walker Department of Mechanical Engineering. Faculty-sponsored, paired with a graduate mentor, ending in a technical paper and a poster.</p>
+          <p>This is the entry I most want to fill in. I'll add detail here as the work happens.</p>
+        </div>
+        <dl class="spec">
+          <div><dt>Program</dt><dd>FIRE</dd></div>
+          <div><dt>Entry</dt><dd>By invitation</dd></div>
+          <div><dt>Mentor</dt><dd>Graduate researcher</dd></div>
+          <div><dt>Output</dt><dd>Paper and poster</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="proj">
+      <h3>tolstack <em>Monte Carlo tolerance analysis</em></h3>
+      <p class="meta">Python, no dependencies</p>
+      <div class="proj-body">
+        <div>
+          <p>Worst-case stack-up assumes every part in an assembly arrives at the wrong end of its tolerance band on the same day. That almost never happens, so designers who trust it pay for tolerances they did not need. RSS gets closer, but falls apart the moment a process runs off centre.</p>
+          <p>tolstack samples each dimension from the distribution it actually has (normal, uniform or triangular, with an optional mean shift) and reports all three methods side by side. It also ranks each dimension by its share of the output variance, which points to the one tolerance worth paying to tighten.</p>
+          <p>On the bearing seat example, worst case says the design fails outright. 200,000 sampled assemblies say 125 ppm and a Cpk of 1.17, with the housing bore owning 61 percent of the variance.</p>
+        </div>
+        <dl class="spec">
+          <div><dt>Language</dt><dd>Python 3.8+</dd></div>
+          <div><dt>Dependencies</dt><dd>None</dd></div>
+          <div><dt>Distributions</dt><dd>3</dd></div>
+          <div><dt>Self tests</dt><dd>8, all pass</dd></div>
+          <div><dt>Output</dt><dd>ppm, Cpk, histogram</dd></div>
+        </dl>
+      </div>
+      <div class="demo">
+        <div class="demo-head"><b>Live</b>Move a tolerance and 20,000 assemblies are resampled.</div>
+        <div class="demo-ctl">
+          <label>Bore &plusmn; <output id="ts-o0">0.050</output> mm
+            <input type="range" id="ts-r0" min="0.010" max="0.100" step="0.001" value="0.050"></label>
+          <label>Bearing OD &plusmn; <output id="ts-o1">0.012</output> mm
+            <input type="range" id="ts-r1" min="0.004" max="0.050" step="0.001" value="0.012"></label>
+          <label>Roundness &plusmn; <output id="ts-o2">0.015</output> mm
+            <input type="range" id="ts-r2" min="0.004" max="0.050" step="0.001" value="0.015"></label>
+          <label>Seat wear &plusmn; <output id="ts-o3">0.020</output> mm
+            <input type="range" id="ts-r3" min="0.004" max="0.060" step="0.001" value="0.020"></label>
+        </div>
+        <canvas id="ts-cv" height="170"></canvas>
+        <div class="demo-out" id="ts-out"></div>
+      </div>
+    </article>
+
+    <article class="proj">
+      <h3>ik <em>planar inverse kinematics</em></h3>
+      <p class="meta">C++17, single translation unit</p>
+      <div class="proj-body">
+        <div>
+          <p>Two solvers. One is a closed-form law of cosines solution for a two-link arm that returns both the elbow-up and elbow-down answers, and reports "out of reach" and "base dead zone" as separate failures. The other is damped least squares for any number of links, with joint limits.</p>
+          <p>The damping matters most. Near full extension the Jacobian loses rank, a plain pseudo-inverse asks for enormous joint rates, and a real arm snaps. Levenberg-Marquardt damping keeps the joint rate bounded. The solver also reports manipulability as a warning light for singularities.</p>
+          <p>Ten tests, including the one people skip: seeding each solve from the previous pose so a traced path stays continuous. The largest joint step over a 200-point ellipse is 0.015 rad.</p>
+        </div>
+        <dl class="spec">
+          <div><dt>Language</dt><dd>C++17</dd></div>
+          <div><dt>Dependencies</dt><dd>None</dd></div>
+          <div><dt>Links</dt><dd>Any, tested to 4</dd></div>
+          <div><dt>Tests</dt><dd>10, all pass</dd></div>
+          <div><dt>Typical solve</dt><dd>5 iterations</dd></div>
+        </dl>
+      </div>
+      <div class="demo">
+        <div class="demo-head"><b>Live</b>Drag inside the frame to move the target. The arm re-solves every frame.</div>
+        <div class="demo-ctl">
+          <label>Damping &lambda; <output id="ik-o0">0.05</output>
+            <input type="range" id="ik-r0" min="0.005" max="0.60" step="0.005" value="0.05"></label>
+          <label>Elbow limit &plusmn; <output id="ik-o1">180</output>&deg;
+            <input type="range" id="ik-r1" min="10" max="180" step="5" value="180"></label>
+          <label>Links <output id="ik-o2">3</output>
+            <input type="range" id="ik-r2" min="2" max="5" step="1" value="3"></label>
+        </div>
+        <canvas id="ik-cv" height="300"></canvas>
+        <div class="demo-out" id="ik-out"></div>
+      </div>
+    </article>
+
+    <article class="proj">
+      <h3>profile <em>jerk-limited motion profiles</em></h3>
+      <p class="meta">C++17 core, Python plotter</p>
+      <div class="proj-body">
+        <div>
+          <p>Trapezoidal and seven-segment double-S profiles for a single axis. A trapezoid steps its acceleration instantly, so jerk is unbounded at four instants in every move. Each step is a broadband kick straight into the machine's first structural mode, which is why cheap gantries ring.</p>
+          <p>The jerk-limited planner solves the geometry in closed form instead of searching, including the two cases that break naive implementations: a move too short to reach top speed, and a move too short to reach peak acceleration either.</p>
+          <p>On a 400-unit move the jerk-limited profile takes 8.4 percent longer on paper and stops exciting the structure.</p>
+        </div>
+        <dl class="spec">
+          <div><dt>Language</dt><dd>C++17, Python</dd></div>
+          <div><dt>Profiles</dt><dd>Trapezoid, double-S</dd></div>
+          <div><dt>Segments</dt><dd>7, exact cubic</dd></div>
+          <div><dt>Tests</dt><dd>13, all pass</dd></div>
+          <div><dt>Time penalty</dt><dd>8.4%</dd></div>
+        </dl>
+      </div>
+      <div class="demo">
+        <div class="demo-head"><b>Live</b>Both profiles are replanned on every change. Green is jerk-limited, brick red is the trapezoid.</div>
+        <div class="demo-ctl">
+          <label>Distance <output id="mp-o0">400</output>
+            <input type="range" id="mp-r0" min="1" max="800" step="1" value="400"></label>
+          <label>v max <output id="mp-o1">300</output>
+            <input type="range" id="mp-r1" min="50" max="600" step="10" value="300"></label>
+          <label>a max <output id="mp-o2">1200</output>
+            <input type="range" id="mp-r2" min="200" max="4000" step="50" value="1200"></label>
+          <label>j max <output id="mp-o3">9000</output>
+            <input type="range" id="mp-r3" min="1000" max="40000" step="500" value="9000"></label>
+        </div>
+        <canvas id="mp-cv" height="320"></canvas>
+        <div class="demo-out" id="mp-out"></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<section class="sec" id="tools">
+  <div class="sec-h">
+    <h2>What I work in</h2>
+    <p>Each language, and what I have actually used it for.</p>
+  </div>
+  <table>
+    <thead><tr><th>Tool</th><th>Used for</th><th>How often</th></tr></thead>
+    <tbody>
+      <tr><td>Python</td><td>Monte Carlo simulation, the JaamTech backend, plotting</td><td class="d">Daily</td></tr>
+      <tr><td>C++</td><td>Kinematics, motion planning, embedded control</td><td class="d">Working</td></tr>
+      <tr><td>Java</td><td>Coursework, object-oriented projects</td><td class="d">Working</td></tr>
+      <tr><td>R</td><td>Statistics and plotting test data</td><td class="d">Occasional</td></tr>
+      <tr><td>Google Cloud</td><td>Deployment and hosting for JaamTech</td><td class="d">Working</td></tr>
+      <tr><td>CAD</td><td>Part and mechanism design</td><td class="d">Coursework</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="sec" id="notes">
+  <div class="sec-h">
+    <h2>How I pick problems</h2>
+    <p>Three rules I keep coming back to.</p>
+  </div>
+  <ol class="notes">
+    <li>
+      <h3>The boundary is where things break.</h3>
+      <p>Pure mechanical work and pure software are both well covered. The failures show up where a motor meets a control loop meets a tolerance stack, so that's where I like to work.</p>
+    </li>
+    <li>
+      <h3>Build it, then measure it.</h3>
+      <p>A claim without a measurement is a guess. Every project should end with a number somebody could argue with.</p>
+    </li>
+    <li>
+      <h3>Ship to real people.</h3>
+      <p>JaamTech taught me more in a workshop room than in a deploy log. Software that never reaches anyone is still a prototype.</p>
+    </li>
+  </ol>
+</section>
+
+<section class="sec" id="contact">
+  <div class="sec-h">
+    <h2>Contact</h2>
+    <p>Austin, Texas</p>
+  </div>
+  <div>
+    <p class="say">Email is the fastest way to reach me: <a href="mailto:ansh.trip1@gmail.com">ansh.trip1@gmail.com</a>. My full background is on <a href="https://www.linkedin.com/in/anshtrip120">LinkedIn</a>.</p>
+    <p class="small">Currently looking for a hardware or robotics internship.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <span>Ansh Tripathi</span>
+  <span>Austin, Texas</span>
+</footer>
+</div>
+
+<script>
+(function(){
+  var O2={x:52,y:100}, O4={x:132,y:100};
+  var a=28,b=90,c=60;
+  var els={l1:0,l2:0,l3:0,t1:0,t2:0,o2:0,o4:0,pa:0,pb:0,pp:0,curve:0};
+  for(var k in els) els[k]=document.getElementById(k);
+  if(!els.l1) return;
+
+  els.o2.setAttribute('cx',O2.x); els.o2.setAttribute('cy',O2.y);
+  els.o4.setAttribute('cx',O4.x); els.o4.setAttribute('cy',O4.y);
+
+  function solve(t){
+    var A={x:O2.x+a*Math.cos(t), y:O2.y-a*Math.sin(t)};
+    var dx=O4.x-A.x, dy=O4.y-A.y, D=Math.hypot(dx,dy);
+    var aa=(b*b-c*c+D*D)/(2*D);
+    var h=Math.sqrt(Math.max(0,b*b-aa*aa));
+    var mx=A.x+aa*dx/D, my=A.y+aa*dy/D;
+    var B={x:mx-h*dy/D, y:my+h*dx/D};
+    var ux=(B.x-A.x)/b, uy=(B.y-A.y)/b;
+    var P={x:A.x+0.5*b*ux-30*uy, y:A.y+0.5*b*uy+30*ux};
+    return {A:A,B:B,P:P};
+  }
+
+  var d='';
+  for(var i=0;i<=180;i++){
+    var p=solve(i/180*Math.PI*2).P;
+    d+=(i?'L':'M')+p.x.toFixed(2)+' '+p.y.toFixed(2);
+  }
+  els.curve.setAttribute('d',d+'Z');
+
+  function seg(el,p,q){el.setAttribute('x1',p.x);el.setAttribute('y1',p.y);el.setAttribute('x2',q.x);el.setAttribute('y2',q.y);}
+  function dot(el,p){el.setAttribute('cx',p.x);el.setAttribute('cy',p.y);}
+
+  function draw(t){
+    var s=solve(t);
+    seg(els.l1,O2,s.A); seg(els.l2,s.A,s.B); seg(els.l3,s.B,O4);
+    seg(els.t1,s.A,s.P); seg(els.t2,s.B,s.P);
+    dot(els.pa,s.A); dot(els.pb,s.B); dot(els.pp,s.P);
+  }
+
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ draw(0.9); return; }
+
+  // Runs at 30fps, pauses when scrolled away or the tab is in the background,
+  // and keeps its own phase so pausing never makes the linkage jump.
+  var phase=0, last=null, running=false, onScreen=true, tabOn=!document.hidden;
+  function frame(ts){
+    if(!running) return;
+    if(last!==null){
+      var dt=Math.min(ts-last, 100);
+      if(dt>=32){ phase += dt/7000*Math.PI*2; draw(phase); last=ts; }
+    } else { last=ts; draw(phase); }
+    requestAnimationFrame(frame);
+  }
+  function sync(){
+    var go = onScreen && tabOn;
+    if(go && !running){ running=true; last=null; requestAnimationFrame(frame); }
+    else if(!go){ running=false; }
+  }
+  if(window.IntersectionObserver){
+    new IntersectionObserver(function(e){ onScreen=e[0].isIntersecting; sync(); },
+                             {rootMargin:"60px"}).observe(els.l1.ownerSVGElement);
+  }
+  document.addEventListener("visibilitychange", function(){
+    tabOn=!document.hidden; sync();
+  });
+  draw(0);
+  sync();
+})();
+</script>
+
+<script>
+(function(){
+// Pure math for the three portfolio demos. No DOM, so it can be tested in
+// node against the C++ and Python originals before being inlined.
+
+// ---------------------------------------------------------------- rng ----
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+var _spare = null;
+function gauss(rng) {              // Box-Muller, keeping the second value
+  if (_spare !== null) { var t = _spare; _spare = null; return t; }
+  var u = 1 - rng(), v = 2 * Math.PI * rng();
+  var r = Math.sqrt(-2 * Math.log(u));
+  _spare = r * Math.sin(v);
+  return r * Math.cos(v);
+}
+
+// ------------------------------------------------------- tolerance ------
+var UNIT_SIGMA = {
+  normal: function (sr) { return 1 / sr; },
+  uniform: function () { return 1 / Math.sqrt(3); },
+  triangular: function () { return 1 / Math.sqrt(6); }
+};
+
+function sampleDim(d, rng) {
+  var c = d.nominal + (d.shift || 0);
+  if (d.dist === 'uniform') return c - d.tol + 2 * d.tol * rng();
+  if (d.dist === 'triangular') {
+    var u = rng(), lo = c - d.tol, hi = c + d.tol;
+    return u < 0.5 ? lo + (hi - lo) * Math.sqrt(u / 2)
+                   : hi - (hi - lo) * Math.sqrt((1 - u) / 2);
+  }
+  return c + gauss(rng) * (d.tol / (d.sigma_ratio || 3));
+}
+
+var _buf = null;
+function runStack(dims, lower, upper, n, seed) {
+  if (!_buf || _buf.length < n) _buf = new Float64Array(n);
+  var s = _buf, rng = mulberry32(seed || 1);
+  _spare = null;
+  var i, j, mean = 0, mn = Infinity, mx = -Infinity;
+  for (i = 0; i < n; i++) {
+    var g = 0;
+    for (j = 0; j < dims.length; j++)
+      g += (dims[j].direction || 1) * sampleDim(dims[j], rng);
+    s[i] = g; mean += g;
+    if (g < mn) mn = g;
+    if (g > mx) mx = g;
+  }
+  mean /= n;
+
+  var bins = 40, hist = new Array(bins).fill(0);
+  var span = (mx - mn) || 1, v = 0, lo = 0, hi = 0;
+  for (i = 0; i < n; i++) {
+    var d = s[i] - mean;
+    v += d * d;
+    if (s[i] < lower) lo++; else if (s[i] > upper) hi++;
+    var k = (s[i] - mn) / span * bins | 0;
+    hist[k >= bins ? bins - 1 : k]++;
+  }
+  var sd = Math.sqrt(v / (n - 1));
+  var cpk = sd === 0 ? Infinity
+    : Math.min((upper - mean) / (3 * sd), (mean - lower) / (3 * sd));
+
+  var nominal = 0, wc = 0, varsum = 0;
+  for (j = 0; j < dims.length; j++) {
+    nominal += (dims[j].direction || 1) * dims[j].nominal;
+    wc += dims[j].tol;
+    var sig = dims[j].tol * UNIT_SIGMA[dims[j].dist || 'normal'](dims[j].sigma_ratio || 3);
+    dims[j]._var = sig * sig;
+    varsum += sig * sig;
+  }
+  var contrib = dims.map(function (d) {
+    return { name: d.name, share: varsum ? d._var / varsum : 0 };
+  }).sort(function (a, b) { return b.share - a.share; });
+
+  return {
+    n: n, mean: mean, sd: sd, min: mn, max: mx,
+    ppm: (lo + hi) / n * 1e6, failLow: lo, failHigh: hi,
+    cpk: cpk, hist: hist, nominal: nominal,
+    worst: [nominal - wc, nominal + wc],
+    rss: [nominal - 3 * Math.sqrt(varsum), nominal + 3 * Math.sqrt(varsum)],
+    contrib: contrib
+  };
+}
+
+// --------------------------------------------------------------- ik -----
+function fk(links, q) {
+  var a = 0, x = 0, y = 0, pts = [{ x: 0, y: 0 }];
+  for (var i = 0; i < links.length; i++) {
+    a += q[i];
+    x += links[i] * Math.cos(a);
+    y += links[i] * Math.sin(a);
+    pts.push({ x: x, y: y });
+  }
+  return pts;
+}
+
+function manipulability(links, q) {
+  var p = fk(links, q), tip = p[p.length - 1], n = links.length;
+  var a = 0, b = 0, c = 0;
+  for (var j = 0; j < n; j++) {
+    var jx = -(tip.y - p[j].y), jy = tip.x - p[j].x;
+    a += jx * jx; b += jx * jy; c += jy * jy;
+  }
+  return Math.sqrt(Math.max(0, a * c - b * b));
+}
+
+function solveDLS(links, target, q, opt) {
+  opt = opt || {};
+  var maxIters = opt.maxIters || 200, tol = opt.tol || 1e-6;
+  var lam = opt.lambda === undefined ? 0.05 : opt.lambda;
+  var clampStep = opt.stepClamp || 0.4;
+  var lim = opt.limits || null;
+  var n = links.length;
+  q = q.slice();
+  var iters = 0, err = 0, converged = false, hitLimit = false;
+
+  for (var it = 0; it < maxIters; it++) {
+    var p = fk(links, q), tip = p[n];
+    var ex = target.x - tip.x, ey = target.y - tip.y;
+    err = Math.hypot(ex, ey);
+    iters = it;
+    if (err < tol) { converged = true; break; }
+
+    var Jx = new Array(n), Jy = new Array(n);
+    var a = 0, b = 0, c = 0;
+    for (var j = 0; j < n; j++) {
+      Jx[j] = -(tip.y - p[j].y);
+      Jy[j] = tip.x - p[j].x;
+      a += Jx[j] * Jx[j]; b += Jx[j] * Jy[j]; c += Jy[j] * Jy[j];
+    }
+    a += lam * lam; c += lam * lam;
+    var det = a * c - b * b;
+    if (Math.abs(det) < 1e-15) break;
+    var ux = (c * ex - b * ey) / det, uy = (-b * ex + a * ey) / det;
+
+    var dq = new Array(n), big = 0;
+    for (j = 0; j < n; j++) {
+      dq[j] = Jx[j] * ux + Jy[j] * uy;
+      big = Math.max(big, Math.abs(dq[j]));
+    }
+    if (big > clampStep) {
+      var k = clampStep / big;
+      for (j = 0; j < n; j++) dq[j] *= k;
+    }
+    for (j = 0; j < n; j++) {
+      q[j] += dq[j];
+      if (lim) q[j] = Math.min(Math.max(q[j], lim[j][0]), lim[j][1]);
+    }
+  }
+  if (!converged) {
+    var pf = fk(links, q);
+    err = Math.hypot(target.x - pf[n].x, target.y - pf[n].y);
+  }
+  if (lim) for (j = 0; j < n; j++)
+    if (Math.abs(q[j] - lim[j][0]) < 1e-9 || Math.abs(q[j] - lim[j][1]) < 1e-9)
+      hitLimit = true;
+
+  return {
+    q: q, iters: iters, error: err, converged: converged,
+    manip: manipulability(links, q), hitLimit: hitLimit
+  };
+}
+
+function solveTwoLink(l1, l2, t) {
+  var r2 = t.x * t.x + t.y * t.y, r = Math.sqrt(r2);
+  if (r > l1 + l2 + 1e-9) return { reachable: false, folded: false };
+  if (r < Math.abs(l1 - l2) - 1e-9) return { reachable: false, folded: true };
+  var c2 = Math.min(1, Math.max(-1, (r2 - l1 * l1 - l2 * l2) / (2 * l1 * l2)));
+  var q2 = Math.acos(c2);
+  function sh(e) {
+    return Math.atan2(t.y, t.x) - Math.atan2(l2 * Math.sin(e), l1 + l2 * Math.cos(e));
+  }
+  return { reachable: true, folded: false, up: [sh(q2), q2], down: [sh(-q2), -q2] };
+}
+
+// ---------------------------------------------------------- profile ----
+function trapezoid(D, lim) {
+  var dir = D >= 0 ? 1 : -1; D = Math.abs(D);
+  var tRamp = lim.vmax / lim.amax;
+  var dRamp = 0.5 * lim.amax * tRamp * tRamp;
+  var vPeak, tFlat;
+  if (2 * dRamp <= D) { vPeak = lim.vmax; tFlat = (D - 2 * dRamp) / lim.vmax; }
+  else { tRamp = Math.sqrt(D / lim.amax); vPeak = lim.amax * tRamp; tFlat = 0; }
+  var T = 2 * tRamp + tFlat;
+  return {
+    duration: T, vPeak: vPeak, reachedVmax: tFlat > 0,
+    sample: function (t) {
+      var A = lim.amax, q, v, acc;
+      if (t <= 0) { q = 0; v = 0; acc = 0; }
+      else if (t < tRamp) { acc = A; v = A * t; q = 0.5 * A * t * t; }
+      else if (t < tRamp + tFlat) {
+        var td = t - tRamp; acc = 0; v = vPeak;
+        q = 0.5 * A * tRamp * tRamp + vPeak * td;
+      } else if (t < T) {
+        var te = t - tRamp - tFlat; acc = -A; v = vPeak - A * te;
+        q = 0.5 * A * tRamp * tRamp + vPeak * tFlat + vPeak * te - 0.5 * A * te * te;
+      } else { q = A * tRamp * tRamp + vPeak * tFlat; v = 0; acc = 0; }
+      return { q: dir * q, v: dir * v, a: dir * acc, j: 0 };
+    }
+  };
+}
+
+function planDoubleS(D, lim) {
+  D = Math.abs(D);
+  if (D <= 0) return { Tj: 0, Ta: 0, Tv: 0, vPeak: 0, aPeak: 0, duration: 0,
+                       reachedVmax: false, reachedAmax: false };
+  var Tj, Ta, amaxHit;
+  if (lim.vmax * lim.jmax >= lim.amax * lim.amax) {
+    amaxHit = true; Tj = lim.amax / lim.jmax; Ta = Tj + lim.vmax / lim.amax;
+  } else {
+    amaxHit = false; Tj = Math.sqrt(lim.vmax / lim.jmax); Ta = 2 * Tj;
+  }
+  var dRamp = lim.vmax * Ta / 2, p = {};
+  if (D >= 2 * dRamp) {
+    p.reachedVmax = true; p.reachedAmax = amaxHit;
+    p.Tj = Tj; p.Ta = Ta; p.vPeak = lim.vmax;
+    p.Tv = (D - 2 * dRamp) / lim.vmax;
+  } else {
+    p.reachedVmax = false; p.Tv = 0;
+    var k = lim.amax / lim.jmax;
+    var v = lim.amax * (-k + Math.sqrt(k * k + 4 * D / lim.amax)) / 2;
+    if (v >= lim.amax * lim.amax / lim.jmax) {
+      p.reachedAmax = true; p.vPeak = v;
+      p.Tj = lim.amax / lim.jmax; p.Ta = p.Tj + v / lim.amax;
+    } else {
+      p.reachedAmax = false;
+      p.vPeak = Math.cbrt(D * D * lim.jmax / 4);
+      p.Tj = Math.sqrt(p.vPeak / lim.jmax); p.Ta = 2 * p.Tj;
+    }
+  }
+  p.aPeak = lim.jmax * p.Tj;
+  p.duration = 2 * p.Ta + p.Tv;
+  return p;
+}
+
+function doubleS(D, lim) {
+  var dir = D >= 0 ? 1 : -1;
+  var p = planDoubleS(D, lim);
+  var j = dir * lim.jmax, flat = Math.max(0, p.Ta - 2 * p.Tj);
+  var segs = [[p.Tj, j], [flat, 0], [p.Tj, -j], [p.Tv, 0],
+              [p.Tj, -j], [flat, 0], [p.Tj, j]];
+  return {
+    plan: p, duration: p.duration,
+    sample: function (t) {
+      var q = 0, v = 0, a = 0, el = 0, jj = 0;
+      for (var i = 0; i < segs.length; i++) {
+        var dt = Math.min(Math.max(0, t - el), segs[i][0]), js = segs[i][1];
+        q += v * dt + 0.5 * a * dt * dt + js * dt * dt * dt / 6;
+        v += a * dt + 0.5 * js * dt * dt;
+        a += js * dt;
+        el += segs[i][0];
+        if (t <= el) { jj = t < el ? js : 0; return { q: q, v: v, a: a, j: jj }; }
+      }
+      return { q: q, v: 0, a: 0, j: 0 };
+    }
+  };
+}
+
+// --------------------------------------------------------------- ui ----
+var INK, INK2, RULE, BLUE, RED, GRID, SOFT, PAPER;
+// Canvas colours come from the CSS variables so the demos follow light and dark.
+function pal() {
+  var probe = pal._p || (pal._p = document.createElement('i'));
+  if (!probe.parentNode) { probe.style.display = 'none'; document.body.appendChild(probe); }
+  function c(n, f) { probe.style.color = 'var(' + n + ')'; return getComputedStyle(probe).color || f; }
+  INK = c('--ink', '#22231F'); INK2 = c('--ink2', '#625E54'); RULE = c('--rule', '#DAD2C1');
+  BLUE = c('--green', '#2E5A3C'); RED = c('--warn', '#9C3F2A'); GRID = c('--grid', '#E9E3D6');
+  SOFT = c('--soft', '#E6EADD'); PAPER = c('--paper', '#FBF8F1');
+}
+pal();
+
+// Resize the backing store only when the size actually changes. Assigning
+// canvas.width reallocates the buffer and forces layout, so doing it every
+// frame is what makes a page like this crawl. Device pixel ratio is capped
+// at 2 because phones ship 3 and 4, and the extra pixels buy nothing here.
+function sizedCtx(cv, h) {
+  pal();
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var w = cv.clientWidth || 600;
+  var pw = Math.round(w * dpr), ph = Math.round(h * dpr);
+  if (cv.width !== pw || cv.height !== ph) {
+    cv.width = pw; cv.height = ph;
+    cv.style.height = h + 'px';
+  }
+  var g = cv.getContext('2d');
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  g.clearRect(0, 0, w, h);
+  return { g: g, w: w, h: h };
+}
+
+// Collapse a burst of events into one draw per frame.
+function coalesce(fn) {
+  var queued = false;
+  return function () {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; fn(); });
+  };
+}
+
+// Only run while the element is on screen and the tab is in front.
+function whenVisible(el, onChange) {
+  var onScreen = true, tabActive = !document.hidden;
+  function push() { onChange(onScreen && tabActive); }
+  if (window.IntersectionObserver) {
+    new IntersectionObserver(function (entries) {
+      onScreen = entries[0].isIntersecting;
+      push();
+    }, { rootMargin: '80px' }).observe(el);
+  }
+  document.addEventListener('visibilitychange', function () {
+    tabActive = !document.hidden;
+    push();
+  });
+  push();
+}
+
+function line(g, x1, y1, x2, y2, color, width, dash) {
+  g.save(); g.strokeStyle = color; g.lineWidth = width || 1;
+  if (dash) g.setLineDash(dash);
+  g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2, y2); g.stroke(); g.restore();
+}
+function label(g, t, x, y, color, align, size) {
+  g.save(); g.fillStyle = color || INK2; g.textAlign = align || 'left';
+  g.font = (size || 10) + 'px "IBM Plex Mono", monospace';
+  g.fillText(t, x, y); g.restore();
+}
+function setText(el, html) {          // skip the reflow when nothing changed
+  if (el._last !== html) { el._last = html; el.innerHTML = html; }
+}
+
+// =================================================== demo 1: tolstack ====
+(function () {
+  var cv = document.getElementById('ts-cv');
+  if (!cv) return;
+  var out = document.getElementById('ts-out');
+  var LOWER = 0.020, UPPER = 0.180;
+  var DRAG_N = 6000, REST_N = 24000;   // cheap under the thumb, accurate after
+  var n = REST_N, settle = null;
+
+  var base = [
+    { name: 'housing bore', nominal: 40.0, tol: 0.05, direction: 1, dist: 'normal', sigma_ratio: 3 },
+    { name: 'bearing od', nominal: 39.96, tol: 0.012, direction: -1, dist: 'normal', sigma_ratio: 4 },
+    { name: 'bore roundness', nominal: 0.0, tol: 0.015, direction: 1, dist: 'triangular' },
+    { name: 'seat wear allow', nominal: 0.06, tol: 0.02, direction: 1, dist: 'uniform', shift: 0.005 }
+  ];
+  var dims = base.map(function (d) { var c = {}; for (var k in d) c[k] = d[k]; return c; });
+
+  function readSliders() {
+    for (var i = 0; i < 4; i++) {
+      var v = parseFloat(document.getElementById('ts-r' + i).value);
+      dims[i].tol = v;
+      document.getElementById('ts-o' + i).textContent = v.toFixed(3);
+    }
+  }
+
+  var draw = coalesce(function () {
+    var res = runStack(dims, LOWER, UPPER, n, 11);
+    var c = sizedCtx(cv, 170), g = c.g, w = c.w, h = c.h;
+    var pad = 16, top = 14, baseY = h - 34;
+    var lo = Math.min(res.min, LOWER, res.worst[0]) - 0.004;
+    var hi = Math.max(res.max, UPPER, res.worst[1]) + 0.004;
+    var X = function (v) { return pad + (v - lo) / (hi - lo) * (w - 2 * pad); };
+    var peak = Math.max.apply(null, res.hist) || 1;
+
+    g.fillStyle = SOFT;
+    g.fillRect(X(LOWER), top, X(UPPER) - X(LOWER), baseY - top);
+
+    var bw = (w - 2 * pad) / res.hist.length * ((res.max - res.min) / (hi - lo));
+    for (var i = 0; i < res.hist.length; i++) {
+      var v0 = res.min + (res.max - res.min) * i / res.hist.length;
+      var bh = res.hist[i] / peak * (baseY - top - 4);
+      var inSpec = v0 >= LOWER && v0 <= UPPER;
+      g.fillStyle = inSpec ? BLUE : RED;
+      g.globalAlpha = inSpec ? 0.75 : 1;
+      g.fillRect(X(v0), baseY - bh, Math.max(1, bw - 0.6), bh);
+    }
+    g.globalAlpha = 1;
+
+    line(g, X(LOWER), top, X(LOWER), baseY, INK, 1, [3, 3]);
+    line(g, X(UPPER), top, X(UPPER), baseY, INK, 1, [3, 3]);
+    line(g, pad, baseY, w - pad, baseY, RULE, 1);
+    label(g, 'LSL ' + LOWER.toFixed(3), X(LOWER) + 4, top + 10, INK2);
+    label(g, UPPER.toFixed(3) + ' USL', X(UPPER) - 4, top + 10, INK2, 'right');
+
+    var rows = [[res.worst, RED], [res.rss, INK2], [[res.min, res.max], BLUE]];
+    for (i = 0; i < rows.length; i++) {
+      var y = baseY + 7 + i * 6;
+      line(g, X(rows[i][0][0]), y, X(rows[i][0][1]), y, rows[i][1], 2.5);
+    }
+    g.font = '10px "IBM Plex Mono", monospace';
+    var lx = pad, leg = [['span', INK2], ['worst case', RED], ['RSS', INK2], ['Monte Carlo', BLUE]];
+    for (i = 0; i < leg.length; i++) {
+      label(g, leg[i][0], lx, h - 2, leg[i][1]);
+      lx += g.measureText(leg[i][0]).width + 14;
+    }
+
+    var wcFail = res.worst[0] < LOWER || res.worst[1] > UPPER;
+    setText(out,
+      'mean <b>' + res.mean.toFixed(4) + '</b> mm &nbsp; sd <b>' + res.sd.toFixed(4) +
+      '</b> &nbsp; defects <b>' + res.ppm.toFixed(0) + ' ppm</b> &nbsp; Cpk <b class="' +
+      (res.cpk >= 1.33 ? 'good' : 'bad') + '">' + res.cpk.toFixed(2) + '</b>' +
+      ' &nbsp; <span style="opacity:.6">n = ' + res.n.toLocaleString() + '</span>' +
+      '<br>worst case ' + (wcFail ? '<span class="bad">fails the spec</span>'
+                                  : '<span class="good">passes</span>') +
+      ' &nbsp; RSS band ' + (res.rss[1] - res.rss[0]).toFixed(4) +
+      ' vs worst case band ' + (res.worst[1] - res.worst[0]).toFixed(4) +
+      '<br>largest variance share: <b>' + res.contrib[0].name + '</b> at ' +
+      (res.contrib[0].share * 100).toFixed(1) + '%, then ' + res.contrib[1].name +
+      ' at ' + (res.contrib[1].share * 100).toFixed(1) + '%');
+  });
+
+  function onInput() {
+    readSliders();
+    n = DRAG_N;
+    draw();
+    clearTimeout(settle);
+    settle = setTimeout(function () { n = REST_N; draw(); }, 220);
+  }
+
+  for (var i = 0; i < 4; i++)
+    document.getElementById('ts-r' + i).addEventListener('input', onInput);
+  window.addEventListener('resize', draw);
+  readSliders();
+  draw();
+})();
+
+// ========================================================= demo 2: ik ====
+(function () {
+  var cv = document.getElementById('ik-cv');
+  if (!cv) return;
+  var out = document.getElementById('ik-out');
+  var ALL = [1.0, 0.8, 0.6, 0.5, 0.4];
+  var q = [0.5, 0.5, 0.5], target = { x: 1.5, y: 0.5 };
+  var reduce = window.matchMedia &&
+               window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var auto = !reduce, tAuto = 0;
+  var links = ALL.slice(0, 3), lam = 0.05, limits = null;
+  var running = false, visible = false, lastDraw = 0, lastText = 0;
+  var FRAME_MS = 33;                  // 30 fps is plenty for this
+
+  function readSliders() {
+    lam = parseFloat(document.getElementById('ik-r0').value);
+    var deg = parseFloat(document.getElementById('ik-r1').value);
+    var nlinks = parseInt(document.getElementById('ik-r2').value, 10);
+    document.getElementById('ik-o0').textContent = lam.toFixed(3);
+    document.getElementById('ik-o1').textContent = deg.toFixed(0);
+    document.getElementById('ik-o2').textContent = nlinks;
+    var elbow = deg * Math.PI / 180;
+    links = ALL.slice(0, nlinks);
+    while (q.length < links.length) q.push(0.3);
+    q = q.slice(0, links.length);
+    limits = links.map(function (_, i) {
+      return i === 0 ? [-Math.PI, Math.PI] : [-elbow, elbow];
+    });
+  }
+
+  function geom(w, h) {
+    var reach = 0;
+    for (var i = 0; i < links.length; i++) reach += links[i];
+    var scale = Math.min((w - 40) / (2.2 * reach), (h - 40) / (2.0 * reach));
+    return { reach: reach, scale: scale, ox: w * 0.32, oy: h * 0.56 };
+  }
+
+  function draw(ts) {
+    var c = sizedCtx(cv, 300), g = c.g, w = c.w, h = c.h;
+    var G = geom(w, h);
+    var X = function (x) { return G.ox + x * G.scale; };
+    var Y = function (y) { return G.oy - y * G.scale; };
+
+    if (auto) {
+      tAuto += 0.035;
+      target = { x: G.reach * 0.55 + G.reach * 0.3 * Math.cos(tAuto),
+                 y: G.reach * 0.28 * Math.sin(tAuto * 1.7) + G.reach * 0.1 };
+    }
+    var s = solveDLS(links, target, q, { lambda: lam, limits: limits });
+    q = s.q;
+    var pts = fk(links, q);
+
+    g.save(); g.strokeStyle = GRID; g.lineWidth = 1;
+    g.beginPath(); g.arc(X(0), Y(0), G.reach * G.scale, 0, 6.2832); g.stroke();
+    if (links.length === 2) {
+      var inner = Math.abs(2 * links[0] - G.reach);
+      if (inner > 0.01) {
+        g.setLineDash([3, 3]);
+        g.beginPath(); g.arc(X(0), Y(0), inner * G.scale, 0, 6.2832); g.stroke();
+      }
+    }
+    g.restore();
+    line(g, 20, Y(0), w - 20, Y(0), GRID, 1);
+
+    g.save(); g.strokeStyle = INK; g.lineWidth = 3; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(X(pts[0].x), Y(pts[0].y));
+    for (var i = 1; i < pts.length; i++) g.lineTo(X(pts[i].x), Y(pts[i].y));
+    g.stroke(); g.restore();
+
+    g.fillStyle = PAPER; g.strokeStyle = INK; g.lineWidth = 1.4;
+    for (i = 0; i < pts.length; i++) {
+      g.beginPath();
+      g.arc(X(pts[i].x), Y(pts[i].y), i === 0 ? 5 : 3.4, 0, 6.2832);
+      g.fill(); g.stroke();
+    }
+
+    var tip = pts[pts.length - 1];
+    var miss = Math.hypot(target.x - tip.x, target.y - tip.y);
+    var col = miss > 1e-3 ? RED : BLUE;
+    g.strokeStyle = col; g.lineWidth = 1.4;
+    g.beginPath(); g.arc(X(target.x), Y(target.y), 6, 0, 6.2832); g.stroke();
+    line(g, X(target.x) - 9, Y(target.y), X(target.x) + 9, Y(target.y), col, 1);
+    line(g, X(target.x), Y(target.y) - 9, X(target.x), Y(target.y) + 9, col, 1);
+    if (miss > 1e-3)
+      line(g, X(tip.x), Y(tip.y), X(target.x), Y(target.y), RED, 1, [2, 2]);
+
+    label(g, auto ? 'auto sweep, drag to take over'
+                  : 'manual, double click to hand it back', 14, 16, INK2);
+
+    // The readout is HTML, so reflowing it 30 times a second is wasteful.
+    if (!auto || ts - lastText > 160) {
+      lastText = ts;
+      var sing = s.manip < 0.05 * G.reach * G.reach;
+      setText(out,
+        (s.converged ? '<b class="good">converged</b>' : '<b class="bad">stalled</b>') +
+        ' in <b>' + s.iters + '</b> iterations &nbsp; residual <b>' +
+        s.error.toExponential(2) + '</b> &nbsp; manipulability <b class="' +
+        (sing ? 'bad' : '') + '">' + s.manip.toFixed(4) + '</b>' +
+        (sing ? ' near singular' : '') +
+        (s.hitLimit ? ' &nbsp; <span class="bad">a joint is on its stop</span>' : '') +
+        '<br>q = [' + q.map(function (v) { return v.toFixed(3); }).join(', ') +
+        '] rad &nbsp; reach ' + G.reach.toFixed(2) +
+        '<br>drop damping toward zero and push the target past the circle to watch it get twitchy');
+    }
+  }
+
+  var drawOnce = coalesce(function () { draw(performance.now()); });
+
+  function loop(ts) {
+    if (!running) return;
+    if (ts - lastDraw >= FRAME_MS) { lastDraw = ts; draw(ts); }
+    requestAnimationFrame(loop);
+  }
+  function startLoop() {
+    if (running || !visible || !auto) return;
+    running = true;
+    requestAnimationFrame(loop);
+  }
+
+  whenVisible(cv, function (show) {
+    visible = show;
+    if (!show) { running = false; return; }
+    if (auto) startLoop(); else drawOnce();
+  });
+
+  // Taking manual control stops the animation loop completely. From then on
+  // the canvas only redraws when something actually changes.
+  function pointer(e) {
+    auto = false;
+    running = false;
+    var r = cv.getBoundingClientRect();
+    var G = geom(r.width, 300);
+    target = { x: (e.clientX - r.left - G.ox) / G.scale,
+               y: (G.oy - (e.clientY - r.top)) / G.scale };
+    drawOnce();
+    e.preventDefault();
+  }
+  cv.addEventListener('pointerdown', function (e) {
+    try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+    pointer(e);
+  });
+  cv.addEventListener('pointermove', function (e) { if (e.buttons) pointer(e); });
+  cv.addEventListener('dblclick', function () { auto = true; startLoop(); });
+  for (var i = 0; i < 3; i++)
+    document.getElementById('ik-r' + i).addEventListener('input', function () {
+      readSliders();
+      if (!auto) drawOnce();
+    });
+  window.addEventListener('resize', function () { if (!auto) drawOnce(); });
+  readSliders();
+})();
+
+// ==================================================== demo 3: profile ====
+(function () {
+  var cv = document.getElementById('mp-cv');
+  if (!cv) return;
+  var out = document.getElementById('mp-out');
+  var N = 240;
+  var SER = [['v', 'velocity', 'vmax'], ['a', 'acceleration', 'amax'],
+             ['j', 'jerk', 'jmax']];
+
+  var draw = coalesce(function () {
+    var v = [];
+    for (var i = 0; i < 4; i++) {
+      var x = parseFloat(document.getElementById('mp-r' + i).value);
+      document.getElementById('mp-o' + i).textContent = x;
+      v.push(x);
+    }
+    var D = v[0], lim = { vmax: v[1], amax: v[2], jmax: v[3] };
+    var tp = trapezoid(D, lim), ds = doubleS(D, lim);
+    var T = Math.max(tp.duration, ds.duration) * 1.06;
+
+    var c = sizedCtx(cv, 320), g = c.g, w = c.w, h = c.h;
+    var pad = 86, panelH = (h - 18) / 3;
+
+    for (var p = 0; p < 3; p++) {
+      var y0 = 6 + p * panelH, y1 = y0 + panelH - 12;
+      var mid = (y0 + y1) / 2, half = (y1 - y0) / 2;
+      var cap = lim[SER[p][2]], L = cap * 1.12;
+      var X = function (t) { return pad + t / T * (w - pad - 14); };
+      var Y = function (u) { return mid - u / L * half; };
+
+      line(g, pad, mid, w - 14, mid, GRID, 1);
+      line(g, pad, Y(cap), w - 14, Y(cap), RULE, 1, [3, 3]);
+      line(g, pad, Y(-cap), w - 14, Y(-cap), RULE, 1, [3, 3]);
+      label(g, SER[p][1], 4, y0 + 10, INK2, 'left', 9);
+
+      var t, u, i2;
+      if (p < 2) {
+        g.save(); g.strokeStyle = RED; g.lineWidth = 1.5; g.beginPath();
+        for (i2 = 0; i2 <= N; i2++) {
+          t = T * i2 / N;
+          u = tp.sample(t < tp.duration ? t : tp.duration)[SER[p][0]];
+          if (i2) g.lineTo(X(t), Y(u)); else g.moveTo(X(t), Y(u));
+        }
+        g.stroke(); g.restore();
+      }
+      g.save(); g.strokeStyle = BLUE; g.lineWidth = 1.5; g.beginPath();
+      for (i2 = 0; i2 <= N; i2++) {
+        t = T * i2 / N;
+        u = ds.sample(t < ds.duration ? t : ds.duration)[SER[p][0]];
+        if (i2) g.lineTo(X(t), Y(u)); else g.moveTo(X(t), Y(u));
+      }
+      g.stroke(); g.restore();
+    }
+    label(g, T.toFixed(2) + ' s', w - 14, h - 2, INK2, 'right');
+
+    var pen = (ds.duration - tp.duration) / tp.duration * 100;
+    var pl = ds.plan;
+    setText(out,
+      'trapezoid <b>' + tp.duration.toFixed(4) + ' s</b> &nbsp; jerk limited <b>' +
+      ds.duration.toFixed(4) + ' s</b> &nbsp; penalty <b>' + pen.toFixed(1) + '%</b>' +
+      '<br>jerk-limited peak v <b>' + pl.vPeak.toFixed(1) + '</b> of ' + lim.vmax +
+      ', peak a <b>' + pl.aPeak.toFixed(0) + '</b> of ' + lim.amax +
+      '<br>' + (pl.reachedVmax ? 'cruise phase present'
+                               : '<span class="bad">move too short to reach v max, cruise dropped</span>') +
+      ' &nbsp; ' + (pl.reachedAmax ? 'acceleration plateaus'
+                                   : '<span class="bad">too short to reach a max, acceleration is a triangle</span>'));
+  });
+
+  for (var i = 0; i < 4; i++)
+    document.getElementById('mp-r' + i).addEventListener('input', draw);
+  window.addEventListener('resize', draw);
+  draw();
+})();
+
+})();
+</script>
+
+<script>
+(function(){
+  function poke(){ window.dispatchEvent(new Event('resize')); }
+  new MutationObserver(poke).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  if (window.matchMedia) {
+    var m = window.matchMedia('(prefers-color-scheme: dark)');
+    if (m.addEventListener) m.addEventListener('change', poke);
+  }
+})();
+</script>
+</body>
+</html>
